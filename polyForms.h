@@ -1,5 +1,5 @@
-#ifndef FORMLIST_H
-#define FORMLIST_H
+#ifndef POLYFORMS
+#define POLYFORMS
 
 #include <QPoint>
 #include <QPen>
@@ -7,22 +7,24 @@
 #include "parameter.h"
 
 
-class formList
+
+class polyForms
 {
  
  private:
 
-  QList<QPoint > starts;
-  QList<QPoint > ends;
+  QList<QList<QPoint > > lists;
   QList<QPen > pens;
-  QList<int > types;
+  QList<int> types;
   int listLength;
 
+
  public:
- formList(): listLength(0){}
-  ~formList(){}
+ polyForms():listLength(0){}
+  ~polyForms(){}
   
   void setControl(int id){
+
     if (id == UNDO){
       if(listLength != 0) listLength = listLength - 1;
     }
@@ -30,40 +32,37 @@ class formList
       if(listLength < pens.size()) listLength = listLength + 1;
     }
     else if (id == CLEAR){
-      while (!pens.isEmpty()){
-	pens.clear();
-	starts.clear();
-	ends.clear();
-	types.clear();
+      listLength = 0;
+      while(listLength < pens.size()){
+	pens.takeLast();
+        lists.takeLast();   // !!
+	types.takeLast();
       }
     }
-     
+
   }
+  
 
-
-  void append(QPoint start, QPoint end, QPen pen, int type) {
+  void append( QList<QPoint > list, QPen pen, int type) {
     pens.append(pen);
-    starts.append(start);
-    ends.append(end);
+    lists.append(list);
     types.append(type);
-    listLength = pens.size();
-    std::cout <<"Num of lines:  " << pens.length() << ' '<<listLength << std::endl;
-
+    listLength = lists.length();
+ 
+    std::cout <<"Num of poly:  " << pens.length() << ' '<<listLength << std::endl;
   }
 
   int getType(int i) const { return types.at(i); }
   int getLength() const { return listLength; }
   QPen  getPen(int i) const { return pens.at(i); }
-  QPoint  getStart(int i) const { return starts.at(i); }
-  QPoint  getEnd(int i) const { return ends.at(i); }
+  QList<QPoint >  getList(int i) const { return lists.at(i); }
   
   bool isEmpty() const { return pens.isEmpty(); }
 
   void alignList() {
     while(listLength < pens.size()){
       pens.takeLast();
-      starts.takeLast();
-      ends.takeLast();
+      lists.takeLast();
       types.takeLast();
     }
   }

@@ -108,7 +108,17 @@ MainWindow::MainWindow(QWidget *parent) :
   EllipseAction->setStatusTip( tr("Ellipse file")); // barre de statut
   drawMenu->addAction(EllipseAction); // rajouter l’action au menu déroulant
 
+  PolylineAction = new QAction( QIcon(":polyline.png"), tr("&Polyline..."), this);
+  PolylineAction->setShortcut( tr("Ctrl+a")); // accélérateur clavier
+  PolylineAction->setToolTip( tr("Polyline file")); // bulle d’aide
+  PolylineAction->setStatusTip( tr("Polyline file")); // barre de statut
+  drawMenu->addAction(PolylineAction); // rajouter l’action au menu déroulant
  
+  PolygonAction = new QAction( QIcon(":polygon.png"), tr("&Polygon..."), this);
+  PolygonAction->setShortcut( tr("Ctrl+b")); // accélérateur clavier
+  PolygonAction->setToolTip( tr("Polygon file")); // bulle d’aide
+  PolygonAction->setStatusTip( tr("Polygon file")); // barre de statut
+  drawMenu->addAction(PolygonAction); // rajouter l’action au menu déroulant
  
 
   /* Add to menu bar 'help'
@@ -146,6 +156,12 @@ MainWindow::MainWindow(QWidget *parent) :
   
   Ellipse_toolBar = this->addToolBar( tr("Ellipse") );
   Ellipse_toolBar->addAction(EllipseAction); 
+  
+  Polyline_toolBar = this->addToolBar( tr("Polyline") );
+  Polyline_toolBar->addAction(PolylineAction); 
+  
+  Polygon_toolBar = this->addToolBar( tr("Polygon") );
+  Polygon_toolBar->addAction(PolygonAction); 
   
   
   
@@ -228,32 +244,34 @@ MainWindow::MainWindow(QWidget *parent) :
   colorgroup->addButton(colorButton_r);
   colorgroup->addButton(colorButton_g);
   colorgroup->addButton(colorButton_b);
-  connect(colorgroup, SIGNAL(buttonClicked(int)), pic, SLOT(setColor(int)));
+  connect(colorgroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(setColor(QAbstractButton* )));
 
   
   QButtonGroup * stylegroup = new QButtonGroup(this);
   stylegroup->addButton(styleButton_1);
   stylegroup->addButton(styleButton_2);
   stylegroup->addButton(styleButton_3);
-  connect(stylegroup, SIGNAL(buttonClicked(int)), pic, SLOT(setStyle(int)));
+  connect(stylegroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(setStyle(QAbstractButton* )));
 
   QButtonGroup * widthgroup = new QButtonGroup(this);
   widthgroup->addButton(widthButton_1);
   widthgroup->addButton(widthButton_2);
   widthgroup->addButton(widthButton_3);
-  connect(widthgroup, SIGNAL(buttonClicked(int)), pic, SLOT(setWidth(int)));
+  connect(widthgroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(setWidth(QAbstractButton* )));
 
   QButtonGroup * controlgroup = new QButtonGroup(this);
   controlgroup->addButton(controlButton_1);
   controlgroup->addButton(controlButton_2);
   controlgroup->addButton(controlButton_3);
-  connect(controlgroup, SIGNAL(buttonClicked(int)), pic, SLOT(setControl(int)));
+  connect(controlgroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(setControl(QAbstractButton*)));
 
   // action group
   QActionGroup *drawgroup = new QActionGroup(this);
   drawgroup->addAction(LineAction);
   drawgroup->addAction(RectangleAction); 
   drawgroup->addAction(EllipseAction); 
+  drawgroup->addAction(PolylineAction); 
+  drawgroup->addAction(PolygonAction); 
   connect(drawgroup, SIGNAL(triggered(QAction *)), this, SLOT(setType(QAction *)));
 
   
@@ -348,13 +366,38 @@ void MainWindow::copyFile(){}
 void MainWindow::pasteFile(){}
 
 void MainWindow::setType(QAction * sender){
-  
-  if (sender == LineAction) pic->drawType(1);
-  else if (sender == RectangleAction) pic->drawType(2);
-  else if (sender == EllipseAction) pic->drawType(3);
-    
+  if (sender == LineAction) pic->drawType(LINE);
+  else if (sender == RectangleAction) pic->drawType(RECTANGLE);
+  else if (sender == EllipseAction) pic->drawType(ELLIPSE);
+  else if (sender == PolylineAction) pic->drawType(POLYLINE);
+  else if (sender == PolygonAction) pic->drawType(POLYGON);
 }
 
+void MainWindow::setColor(QAbstractButton* button){
+     if( button == colorButton_r) pic->setColor(Qt::red);
+     else if(button == colorButton_g) pic->setColor(Qt::green);
+     else if(button == colorButton_b) pic->setColor(Qt::blue);
+}
+
+void MainWindow::setWidth(QAbstractButton* button){
+     if(button == widthButton_1) pic->setWidth(1);
+     else if(button == widthButton_2) pic->setWidth(2);
+     else if(button == widthButton_3) pic->setWidth(3);
+}
+
+void MainWindow::setStyle(QAbstractButton* button){
+
+     if(button == styleButton_1) pic->setStyle(Qt::DashLine);
+     else if(button == styleButton_2) pic->setStyle(Qt::DotLine);
+     else if(button == styleButton_3) pic->setStyle(Qt::DashDotLine);
+}
+
+void MainWindow::setControl(QAbstractButton* button){
+ 
+     if(button == controlButton_1) pic->setControl(UNDO);
+     else if(button == controlButton_2) pic->setControl(REDO);
+     else if(button == controlButton_3) pic->setControl(CLEAR);
+}
 
 // # widget
 // greaterThan(QT_MAJOR_VERSION, 4): QT += widgets

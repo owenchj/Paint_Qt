@@ -51,6 +51,8 @@ class MainWindow : public QMainWindow
   QAction * LineAction;
   QAction * RectangleAction;
   QAction * EllipseAction;
+  QAction * PolylineAction;
+  QAction * PolygonAction;
   
   // help menu
   QMenu * helpMenu;
@@ -67,6 +69,10 @@ class MainWindow : public QMainWindow
   QToolBar * Line_toolBar;
   QToolBar * Rectangle_toolBar;
   QToolBar * Ellipse_toolBar;
+  QToolBar * Polyline_toolBar;
+  QToolBar * Polygon_toolBar;
+
+
 
   Picture * pic;
   /* // actions to adjust color */
@@ -117,6 +123,10 @@ class MainWindow : public QMainWindow
     void copyFile();
     void pasteFile();
     void setType(QAction * sender);
+    void setColor(QAbstractButton* button);
+    void setWidth(QAbstractButton* button);
+    void setStyle(QAbstractButton* button);
+    void setControl(QAbstractButton* button);
     // signals:
     // void triggered();
 };

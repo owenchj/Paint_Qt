@@ -15,7 +15,8 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp Picture.cpp
 
-HEADERS  += mainwindow.h Picture.h formList.h
+HEADERS  += mainwindow.h Picture.h formList.h \
+    polyForms.h parameter.h
 
 FORMS    += mainwindow.ui
 
