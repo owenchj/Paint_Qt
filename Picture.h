@@ -7,48 +7,60 @@
 #include <QPainter>
 #include <QAction>
 #include <QMouseEvent>
+#include <QLine>
 
-#include "formList.h"
-#include "polyForms.h"
+#include "line.h"
+#include "ellipse.h"
+#include "rectangle.h"
+#include "polyline.h"
+#include "polygon.h"
 #include "parameter.h"
 
 
 class Picture : public QWidget
 {
   Q_OBJECT
-
- public:
-  Picture(QWidget * parent = 0) : QWidget(parent), type(1), begin(false), length(0), order_length(0),order_type(0) {} 
-  void drawType(int id);
-  void alignList();
-  void setStyle(Qt::PenStyle style);
-  void setWidth(int w);
-  void setColor(QColor c);
-  // drawing control 
-  void setControl(int id);
     
  private:
   QPoint EndPoint, StartPoint;
-  QPoint singleEndPoint, singleStartPoint;
+  QPoint end, start;
   QPen pen;
   int type;
-  // normal forms
-  formList list;
-  // poly forms
-  polyForms polyform_list;
-  QList<QPoint > polyform;  
-  QPoint *points;
-  bool begin;
-  int length;
+  Line *line;
+  Rectangle *rectangle;
+  Ellipse *ellipse;
+  Polyline *polyline;
+  Polygon *polygon;
+  QList <Form * > forms;
   
-  // for controle 
-  QList<int > order;  
-  int order_length;
-  int  order_type;
+  bool started;
+  int forms_length;
+
+ public:
+ Picture(QWidget * parent = 0) : QWidget(parent), type(1), started(false), forms_length(0) {}
+  virtual ~Picture(){ 
+    delete line;
+    delete rectangle;
+    delete ellipse;
+    delete polyline;
+    delete polygon;
+  }
+
+  void alignList();
+  
+  void drawType(int id);
+
+  void setStyle(Qt::PenStyle style);
+  void setWidth(int w);
+  void setColor(QColor c);
+  void setControl(int id);
+
+  void undo();
+  void redo();
+  void clear();
   
  protected:
   virtual void paintEvent(QPaintEvent*);
-  //void drawForm(QPoint , QPoint , QPen, int, QPainter );
   void mousePressEvent(QMouseEvent*); 
   void mouseReleaseEvent(QMouseEvent*); 
   void mouseMoveEvent(QMouseEvent*); 
