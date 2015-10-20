@@ -314,30 +314,7 @@ void MainWindow::openFile()
   
 void MainWindow::saveFile()
 {
-  QString fileName =
-    QFileDialog::getSaveFileName( this,
-				  tr("Save File"), // titre
-				  "/home/owen", // répertoire initial
-				  tr("Image Files (*.png *.jpg *.bmp *.txt)") // filtre
-				  );
-    
-  if (fileName != "") {
-    QFile file(fileName);
-    if (!file.open(QIODevice::WriteOnly)) {
-      // error message
-    } else {
-      QTextStream stream(&file);
-      // save file from the textedit
-      stream << textEdit->toPlainText();
-      stream.flush();
-      file.close();
-    }
-       
-  } else{
-    // error
-  }
-
-
+    pic->saveFile();
 }
 
 void MainWindow::quitFile()

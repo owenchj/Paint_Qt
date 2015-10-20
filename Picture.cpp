@@ -20,20 +20,23 @@ void Picture::paintEvent(QPaintEvent* e) {
     }
   }
 
-
 }
 
 
 
+// align the list to let the forms length equal to the real length for redo
 void Picture::alignList() {
   while(forms_length < forms.length()){
-      forms.takeLast();
+    // deconstructe
+    delete (forms.last());
+    forms.takeLast();
   }
 }
 
 
 void Picture::mousePressEvent(QMouseEvent* e) {
- 
+
+  // align the list to meet the user's demande for redo 
   alignList();
   
   if(e->button()==Qt::LeftButton){
@@ -70,7 +73,7 @@ void Picture::mousePressEvent(QMouseEvent* e) {
     }
     else if(type == POLYGON){
       if(started == false){
-	std::cout<<type<<std::endl;
+
 	polygon = new Polygon();      
 	polygon->addPoint(start, true);
 	polygon->setPen(pen);
@@ -79,6 +82,7 @@ void Picture::mousePressEvent(QMouseEvent* e) {
       }
     }
     
+    // give the ength of forms 
     forms_length = forms.length();
     
     update();
@@ -105,15 +109,17 @@ void Picture::mouseReleaseEvent(QMouseEvent* e) {
       ((Ellipse*)forms.last())->setEllipse(start, end);
     }
     else if(type == POLYLINE){
+      //  ignore two single click between double click
       if(end != start)
 	((Polyline*)forms.last())->addPoint(end, true);
     }
     else if(type == POLYGON){
+      //  ignore two single click between double click
       if(end != start)
 	((Polygon*)forms.last())->addPoint(end, true);
     }
     
-
+    
     update();
   }  
 }
@@ -149,12 +155,9 @@ void Picture::mouseMoveEvent(QMouseEvent* e) {
 void Picture::mouseDoubleClickEvent(QMouseEvent* e) {
   
   end = e->pos();
- 
-  // if(type == POLYLINE){
-  //   ((Polyline*)forms.last())->addPoint(end, true);
-  // }
-  
+  // initialize the started to start a new polyform
   started = false;
+ 
   update(); 
 }
 
@@ -198,9 +201,15 @@ void Picture::redo(){
 
 void Picture::clear(){
   while(!forms.isEmpty()){
-    forms.clear();
+    // deconstructe
+    delete (forms.last());
+    forms.takeLast();
   }
+  forms.clear();
+  
+  // initial le length of forms
   forms_length = 0;
+
   update();
 }
 
@@ -219,3 +228,36 @@ void Picture::drawType(int id ){
 }
 
 
+
+void Picture::saveFile(){
+  // before we save the forms, align the list 
+  alignList();
+
+  // QString fileName =
+  //   QFileDialog::getSaveFileName( this,
+  //                 tr("Save File"), // titre
+  //                 "/home/owen", // répertoire initial
+  //                 tr("Files (*.data)") // filtre
+  //                 );
+
+  // if (fileName != "") {
+  //   QFile file(fileName);
+  //   if (!file.open(QIODevice::WriteOnly)) {
+  //     // error message
+  //   } else {
+
+  //       std::cout<<"save"<<std::endl;
+
+  //       QByteArray buffer;
+
+  //       QDataStream out( &buffer, QIODevice::ReadWrite );
+  //         //for(int i = 0; i < forms.length(); i++)
+  //         //    out << forms[i]->getPath() << forms[i]->getPath();
+  //     file.close();
+  //   }
+
+  // } else{
+  //   // error
+  // }
+
+}

@@ -8,6 +8,9 @@
 #include <QAction>
 #include <QMouseEvent>
 #include <QLine>
+#include <QDataStream> 
+#include <QFile> 
+#include <QFileDialog>
 
 #include "line.h"
 #include "ellipse.h"
@@ -37,14 +40,10 @@ class Picture : public QWidget
   int forms_length;
 
  public:
- Picture(QWidget * parent = 0) : QWidget(parent), type(1), started(false), forms_length(0) {}
-  virtual ~Picture(){ 
-    delete line;
-    delete rectangle;
-    delete ellipse;
-    delete polyline;
-    delete polygon;
-  }
+
+ Picture(QWidget * parent = 0) : QWidget(parent), type(1), started(false), forms_length(0) { pen.setColor(Qt::red); }
+
+  virtual ~Picture(){}
 
   void alignList();
   
@@ -58,6 +57,9 @@ class Picture : public QWidget
   void undo();
   void redo();
   void clear();
+
+  void saveFile();
+
   
  protected:
   virtual void paintEvent(QPaintEvent*);

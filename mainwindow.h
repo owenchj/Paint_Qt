@@ -8,7 +8,7 @@
 #include <QtWidgets>
 #include <iostream>
 #include <QFileDialog>
-#include <QTextStream> 
+#include <QTextStream>
 #include <QFile>
 #include <QPainter>
 #include "Picture.h"
