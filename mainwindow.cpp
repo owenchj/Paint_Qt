@@ -288,7 +288,7 @@ void MainWindow::openFile()
     QFileDialog::getOpenFileName( this,
 				  tr("Open File"), // titre
 				  "/home/owen", // répertoire initial
-				  tr("Image Files (*.png *.jpg *.bmp *.txt)") // filtre
+				  tr("Image Files (*)") // filtre
 				  );
 
   if (fileName != "") {
@@ -298,23 +298,35 @@ void MainWindow::openFile()
       return;
     }
   
-    // read the file context
-    QTextStream in(&file);
-    QString context = in.readAll();
    
-    // std::cout << "Context is : " << std::endl;
-    // std::cout << qPrintable(context) << std::endl;
-  
-  
-    // display the context in the window
-    textEdit->setPlainText(context);  
+    pic->openFile(file);
+   
     file.close();
   }
 }
   
 void MainWindow::saveFile()
 {
-    pic->saveFile();
+  QString fileName =
+    QFileDialog::getSaveFileName( this,
+				  tr("Save File"), // titre
+				  "/home/owen", // répertoire initial
+				  tr("Image Files (*)") // filtre
+				  );
+  
+  if (fileName != "") {
+    QFile file(fileName);
+    if (!file.open(QIODevice::WriteOnly)) {
+      // error message
+    } else {
+      pic->saveFile(file);
+      file.close();
+    }
+    
+  } else{
+    // error
+  }
+    
 }
 
 void MainWindow::quitFile()

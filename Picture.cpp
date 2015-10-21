@@ -8,10 +8,11 @@ void Picture::paintEvent(QPaintEvent* e) {
   // set pen
   pen.setCapStyle(Qt::RoundCap);
   pen.setJoinStyle(Qt::RoundJoin); 
-
   
-  QPainter painter(this); // crée un Painter pour ce Picture
+  
+  // crée un Painter pour ce Picture
 
+  QPainter painter(this);
   
   if(forms.length()){
     for(int i = 0; i < forms_length; i++){
@@ -19,7 +20,7 @@ void Picture::paintEvent(QPaintEvent* e) {
       painter.drawPath(forms[i]->getPath());
     }
   }
-
+ 
 }
 
 
@@ -33,12 +34,20 @@ void Picture::alignList() {
   }
 }
 
-
 void Picture::mousePressEvent(QMouseEvent* e) {
 
   // align the list to meet the user's demande for redo 
   alignList();
   
+  for(int i = 0; i < forms_length;i++){
+    if( (forms.at(i)->getPath()).intersects(QRect(start,start))){
+    
+  }
+    
+  }
+
+
+
   if(e->button()==Qt::LeftButton){
 
     start = e->pos();
@@ -84,6 +93,10 @@ void Picture::mousePressEvent(QMouseEvent* e) {
     
     // give the ength of forms 
     forms_length = forms.length();
+
+
+    
+
     
     update();
   }
@@ -217,9 +230,7 @@ void Picture::clear(){
 
 void Picture::drawType(int id ){
   // clear the points
-  start = end;
-  started = false;
-
+  
   if (id == 1) type = LINE;
   else if (id == 2) type = RECTANGLE;
   else if (id == 3) type = ELLIPSE;
@@ -229,35 +240,62 @@ void Picture::drawType(int id ){
 
 
 
-void Picture::saveFile(){
+
+
+
+
+void Picture::saveFile(QFile & file){
   // before we save the forms, align the list 
   alignList();
 
-  // QString fileName =
-  //   QFileDialog::getSaveFileName( this,
-  //                 tr("Save File"), // titre
-  //                 "/home/owen", // répertoire initial
-  //                 tr("Files (*.data)") // filtre
-  //                 );
+  
+  QDataStream out(&file);
+  
+  out<<forms.size();
+  
+  
+  for(int i=0;i<forms.size();i++){
+    out<<forms.at(i)->getPen()<<forms.at(i)->getPath();
+  }
+  
+  clear();
 
-  // if (fileName != "") {
-  //   QFile file(fileName);
-  //   if (!file.open(QIODevice::WriteOnly)) {
-  //     // error message
-  //   } else {
+}
 
-  //       std::cout<<"save"<<std::endl;
+void Picture::openFile(QFile & file){
+  // before we save the forms, align the list 
 
-  //       QByteArray buffer;
+  clear();
+  
+  QDataStream in(&file);
+  
+  in>>forms_length;
+   
+  for(int i = 0; i < forms_length;i++){
+    
+    QPen pen;
+    
+    QPainterPath path;
+ 
+    in>>pen;
+    
+    in>>path;
+    
+    Form *f= new Form();
+    
+    f->setPen(pen);
+    
+    f->setPath(path);
+    
+    forms.append(f);
+  }
+  
+  update();
+  
+}
 
-  //       QDataStream out( &buffer, QIODevice::ReadWrite );
-  //         //for(int i = 0; i < forms.length(); i++)
-  //         //    out << forms[i]->getPath() << forms[i]->getPath();
-  //     file.close();
-  //   }
 
-  // } else{
-  //   // error
-  // }
-
+void Picture::moveForms(QPoint &p) {
+  
+ 
 }

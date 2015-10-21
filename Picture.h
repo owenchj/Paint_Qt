@@ -11,6 +11,7 @@
 #include <QDataStream> 
 #include <QFile> 
 #include <QFileDialog>
+#include <QPicture>
 
 #include "line.h"
 #include "ellipse.h"
@@ -37,7 +38,9 @@ class Picture : public QWidget
   QList <Form * > forms;
   
   bool started;
+ 
   int forms_length;
+  
 
  public:
 
@@ -58,7 +61,10 @@ class Picture : public QWidget
   void redo();
   void clear();
 
-  void saveFile();
+  void saveFile(QFile &);
+  void openFile(QFile &);
+  
+  void moveForms(QPoint &);
 
   
  protected:
