@@ -11,7 +11,7 @@ class Polyline:public Form{
   QList <QPoint> points;
 
  public:
-  Polyline(){}
+  Polyline(int ID = POLYLINE):Form(ID){}
   virtual ~Polyline(){}
 
   virtual unsigned int getLength() const{
@@ -19,7 +19,7 @@ class Polyline:public Form{
   }
 
   virtual void addPoint(QPoint next, bool add) {
-    std::cout<<"begin: "<<points.length()<<std::endl;
+    //std::cout<<"begin: "<<points.length()<<std::endl;
     
     path = QPainterPath(); 
     if(points.length()){
@@ -35,9 +35,12 @@ class Polyline:public Form{
     
     if(add) points.append(next);
     
-    std::cout<<"after: "<<points.length()<<std::endl;
+    //std::cout<<"after: "<<points.length()<<std::endl;
   }
 
+  virtual int getID() const{
+    return ID;
+  }
 };
 
 

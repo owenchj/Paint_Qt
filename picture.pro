@@ -17,7 +17,7 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h Picture.h \
     parameter.h ellipse.h rectangle.h\
-    form.h line.h polyline.h
+    form.h line.h polyline.h polygon.h
 
 FORMS    += mainwindow.ui
 

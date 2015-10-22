@@ -24,7 +24,8 @@ class MainWindow : public QMainWindow
  public:
   explicit MainWindow(QWidget *parent = 0);
   ~MainWindow();
-  
+  void setColor();
+  void setWidth();
   
  protected:
   void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
@@ -45,7 +46,8 @@ class MainWindow : public QMainWindow
   QAction * CutAction;
   QAction * CopyAction;
   QAction * PasteAction;
-
+  QAction * SelectAction;
+  
   // draw menu
   QMenu * drawMenu;
   QAction * LineAction;
@@ -53,6 +55,7 @@ class MainWindow : public QMainWindow
   QAction * EllipseAction;
   QAction * PolylineAction;
   QAction * PolygonAction;
+  
   
   // help menu
   QMenu * helpMenu;
@@ -66,6 +69,8 @@ class MainWindow : public QMainWindow
   QToolBar * Cut_toolBar;
   QToolBar * Copy_toolBar;
   QToolBar * Paste_toolBar;
+  QToolBar * Select_toolBar;
+
   QToolBar * Line_toolBar;
   QToolBar * Rectangle_toolBar;
   QToolBar * Ellipse_toolBar;
@@ -122,6 +127,7 @@ class MainWindow : public QMainWindow
     void cutFile();
     void copyFile();
     void pasteFile();
+    void selectForms();
     void setType(QAction * sender);
     void setColor(QAbstractButton* button);
     void setWidth(QAbstractButton* button);
@@ -129,6 +135,20 @@ class MainWindow : public QMainWindow
     void setControl(QAbstractButton* button);
     // signals:
     // void triggered();
+
+    void on_spinBox_0_valueChanged(int arg1);
+    void on_spinBox_1_valueChanged(int arg1);
+    void on_spinBox_2_valueChanged(int arg1);
+    void on_horizontalSlider_0_valueChanged(int value);
+    void on_horizontalSlider_1_valueChanged(int value);
+    void on_horizontalSlider_2_valueChanged(int value);
+
+    void on_spinBox_w_valueChanged(int arg1);
+    void on_horizontalSlider_w_valueChanged(int value);
+    void on_style_box_currentIndexChanged(int index);
+    void on_Undo_clicked();
+    void on_Redo_clicked();
+    void on_Clear_clicked();
 };
 
 #endif // MAINWINDOW_H

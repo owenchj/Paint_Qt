@@ -11,7 +11,7 @@ class Polygon:public Form{
   QList <QPoint> points;
 
  public:
-  Polygon(){}
+  Polygon(int ID = POLYGON):Form(ID){}
   virtual ~Polygon(){}
 
   virtual unsigned int getLength() const{
@@ -19,7 +19,7 @@ class Polygon:public Form{
   }
 
   virtual void addPoint(QPoint next, bool add) {
-    std::cout<<"begin: "<<points.length()<<std::endl;
+    //std::cout<<"begin: "<<points.length()<<std::endl;
     
     path = QPainterPath(); 
     if(points.length()){
@@ -36,7 +36,11 @@ class Polygon:public Form{
     
     if(add) points.append(next);
     
-    std::cout<<"after: "<<points.length()<<std::endl;
+    //std::cout<<"after: "<<points.length()<<std::endl;
+  }
+
+ virtual int getID() const{
+    return ID;
   }
 
 };

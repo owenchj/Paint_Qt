@@ -11,15 +11,28 @@ class Line:public Form{
   QPoint end;
 
  public:
-  Line(){}
+  Line(int ID = LINE):Form(ID){}
   virtual ~Line(){}
 
   virtual void setLine(QPoint start, QPoint end ) {
+    this->start = start;
+    this->end = end;
     path = QPainterPath();
     path.moveTo(start);
     path.lineTo(end);
   }
+  
+  virtual int getID() const{
+    return ID;
+  }
 
+  virtual QPoint getStart() const{
+    return start;
+  }
+
+  virtual QPoint getEnd() const{
+    return end;
+  }
 };
 
 

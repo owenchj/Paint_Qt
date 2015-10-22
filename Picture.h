@@ -29,6 +29,8 @@ class Picture : public QWidget
   QPoint EndPoint, StartPoint;
   QPoint end, start;
   QPen pen;
+  QPainterPath path;
+  int ID;
   int type;
   Line *line;
   Rectangle *rectangle;
@@ -38,14 +40,26 @@ class Picture : public QWidget
   QList <Form * > forms;
   
   bool started;
- 
   int forms_length;
   
-
+  // select and paint mode
+  int mode;
+  Form *form;
+ 
+  // for moving
+  bool start_move; 
+  QPoint element;
+  QPainterPath old_path;
+  QPoint old_end, old_start;  
+  
+  
  public:
-
- Picture(QWidget * parent = 0) : QWidget(parent), type(1), started(false), forms_length(0) { pen.setColor(Qt::red); }
-
+ Picture(QWidget * parent = 0) : QWidget(parent), type(1), started(false), forms_length(0), mode(PAINT), start_move(false) {
+        pen.setColor(QColor(128,128,128,255));
+        pen.setWidth(2);
+        pen.setStyle(Qt::DashLine);
+  }
+  
   virtual ~Picture(){}
 
   void alignList();
@@ -64,7 +78,9 @@ class Picture : public QWidget
   void saveFile(QFile &);
   void openFile(QFile &);
   
-  void moveForms(QPoint &);
+  Form *selectForms();
+  void moveForms();
+  void selectMode();
 
   
  protected:

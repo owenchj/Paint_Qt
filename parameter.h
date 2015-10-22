@@ -13,6 +13,10 @@
 #define REDO 7
 #define CLEAR 8
 
+#define SELECT 9 
+#define PAINT 10
+
+
 
 
 #endif // PARAMETER_H
