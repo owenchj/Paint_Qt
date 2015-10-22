@@ -178,7 +178,7 @@ MainWindow::MainWindow(QWidget *parent) :
   
 
   pic = new Picture;  
-
+  pic->setMinimumSize(200,200);
   setCentralWidget(pic); 
     
   // QWidget * wdg = new QWidget(this);
@@ -290,7 +290,7 @@ MainWindow::MainWindow(QWidget *parent) :
   
 
 
-
+  // ui control
   ui->color_label->setStyleSheet("QLabel {  color : black; }");
   ui->label_0->setStyleSheet("QLabel {  color : red; }");
   ui->label_1->setStyleSheet("QLabel {  color : green; }");

@@ -1,0 +1,71 @@
+Title : IGR201-Qt
+Theme : Painter
+Author: jie chen
+Date  : 22/10/2015
+E-mail: owenchj@gmail.com
+Version controle : Git 
+
+1e Etape: Créer un nouveau projet affichant une zone de dessin
+I created a zone for painting and set its minimum size of 200 * 200.
+It inherits QWidget. 
+
+2e Etape: dessiner un trait interactivement
+I add the three fonctions mousePressEvent(*), mouseReleaseEvent(*) and mouseMoveEvent(*). 
+To draw a line, I need two points, one is the start point another one is the end point.
+So when I press, I get a start point, then I move the mouse, I can get a dynamic end point. 
+The same as the release, except the end point in release is fixed. The most important thing is to call update the painter. 
+
+3e Etape: spécifier des attributs graphiques
+We can set the pen each time when we draw a form. So I define a global QPen in the class Picture or "painting zone". 
+
+4e Etape: choisir interactivement les attributs graphiques
+There are amount of things to do. To change the attributes. 
+I created 3 button group for color, style and width of the form in the Mainwindow.
+So I use "QAbstractButton" to select the button which clicked by user.
+In the class "painting zone", I add three fonctions like setColor(), setWidth(), setStyle(). 
+They can be called from the same fonction/slot in the MainWindows. 
+
+5e Etape: tracer plusieurs traits
+Here, I creat a form list to save each line. But before that we need to create a class of line. 
+So I added "line.h" who inherits the base class form in "form.h". 
+Because we know in the following questions we need to deal with more forms. 
+In the form class, we add three elements a "path", a "pen" and an "ID" which can be inherited by line.
+
+
+6e Etape: tracer plusieurs formes géométriques
+I added the class rectangle and ellipse which are almost the same with the line. 
+For the three forms, we just need two points, a start point and a end point,
+ which can be drawed by QPainterPath, so it's convenient. I didn't use the "Machine à états".
+
+7e Etape: tracer des polylines ou des polygones
+In my opinion, I think plolyline and polygon can also be expressed by a sort of points.
+So I created two classes which inherited the class form. 
+I add a list of point instead of adding the start and end point.
+Each time we press or release the mouse, it will add a point in the point list, also in the path. 
+But When we move the mouse, we do not add the point into the point list but the path, 
+so we can have a effect of dynamic path for the last point. 
+
+
+
+8e Etape: lire et sauvegarder et demander confirmation avant de quitter le programme
+Here we use almost the same structure of file saving in text editor(TP1).
+But we use the "QDataStream" to save the "pen", "ID", "path" instead of QTextStream.
+
+
+
+9e Etape: éditer les attributs (en utilisant QtDesigner)
+To design a good UI is not a easy things. Before, I used the buttons in the MainWindow to control the attributes.
+Now, I use the silders, spinbox; combobox,  buttons to controle the color and width, style, command repectively.
+
+
+10e Etape: utiliser les machines à états
+TODO
+
+11e Etape: modifier les attributs a posteriori
+To achieve this target, we need seperate the paint action into two parts or two mode, a selet mode and a paint mode. 
+In paint mode, we paint just like usual. But in select mode, we will modify the form seleted. So I use the 
+"intersects(const QRectF & rectangle)". the size of the rectangle is choosed by me for the intersection. I put 20*20.
+Which is enough to select a form. 
+
+12e Etape: créer un menu circulaire
+TODO
